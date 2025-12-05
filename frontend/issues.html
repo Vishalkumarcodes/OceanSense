@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Issue List</title><link rel="stylesheet" href="assets/css/styles.css"></head><body>
+  <div class="container"><h1>Recent Reports</h1><div id="list"></div></div>
+<script>
+async function load(){
+  const res = await fetch('/api/issues');
+  const data = await res.json();
+  const list = document.getElementById('list');
+  list.innerHTML = data.map(i=>`<div class="report"><h3>${i.title}</h3><small>${i.created_at}</small><p>${i.description}</p></div>`).join('');
+}
+load();
+</script></body></html>

@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Report an Issue — OceanSense</title><link rel="stylesheet" href="assets/css/styles.css"></head><body>
+  <div class="container">
+    <h1>Report an Ocean Hazard</h1>
+    <form id="reportForm">
+      <label>Title<br><input name="title" required></label><br>
+      <label>Description<br><textarea name="description" rows="5" required></textarea></label><br>
+      <label>Latitude<br><input name="lat" required></label>
+      <label>Longitude<br><input name="lon" required></label>
+      <label>Severity<br>
+        <select name="severity">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+      </label>
+      <label>Photo<br><input name="photo" type="file" accept="image/*"></label>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  <script>
+    const form = document.getElementById('reportForm');
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const data = new FormData(form);
+      const res = await fetch('/api/issues', {method:'POST', body: data});
+      if(res.ok) alert('Report submitted'); else alert('Submission failed');
+    });
+  </script>
+</body></html>

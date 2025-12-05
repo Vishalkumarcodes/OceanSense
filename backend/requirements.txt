@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+psycopg2-binary
+sqlalchemy
+pydantic
+python-dotenv
+pymongo
+passlib[bcrypt]
+python-jose[cryptography]
+pandas
+numpy
+nltk
+opencv-python-headless
+tensorflow
+matplotlib
+python-dotenv

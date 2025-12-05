@@ -1,0 +1,16 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - OceanSense</title><link rel="stylesheet" href="assets/css/styles.css"></head><body>
+  <div class="container"><h1>Login</h1>
+  <form id="loginForm">
+    <label>Email<br><input name="email" required></label><br>
+    <label>Password<br><input type="password" name="password" required></label><br>
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="signup.html">Sign up</a></p></div>
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const res = await fetch('/api/auth/login', {method:'POST', body: JSON.stringify(Object.fromEntries(fd)), headers:{'Content-Type':'application/json'}});
+  if(res.ok) { alert('Logged in'); location.href='index.html'; } else { alert('Login failed'); }
+});
+</script></body></html>
