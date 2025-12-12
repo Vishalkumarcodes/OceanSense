@@ -1,15 +1,200 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign Up - OceanSense</title><link rel="stylesheet" href="assets/css/styles.css"></head><body>
-  <div class="container"><h1>Sign Up</h1>
-  <form id="signupForm">
-    <label>Email<br><input name="email" required></label><br>
-    <label>Password<br><input type="password" name="password" required></label><br>
-    <button type="submit">Sign up</button>
-  </form></div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up — OceanSense</title>
+
+  <!-- Utilities (optional) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Main styles -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Compact signup styles (replaced) -->
+  <link rel="stylesheet" href="assets/css/signup.css">
+</head>
+<body class="signup-page">
+
+  <header class="site-header">
+    <div class="container header-inner d-flex align-items-center justify-content-between">
+      <a href="index.html" class="brand d-flex align-items-center text-decoration-none">
+        <img src="assets/images/logo.png" alt="OceanSense logo" class="logo">
+        <span class="brand-name">Ocean<span class="brand-accent">Sense</span></span>
+      </a>
+    </div>
+  </header>
+
+  <main class="signup-main">
+    <div class="container">
+      <div class="signup-card compact">
+        <div class="signup-left">
+          <h1>Create account</h1>
+          <p class="muted small">Sign up to submit hazard reports and access dashboards.</p>
+
+          <form id="signupForm" class="signup-form" novalidate>
+            <!-- EMAIL -->
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" />
+              <div class="field-msg" id="emailMsg" aria-live="polite"></div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="field">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" required autocomplete="new-password" />
+              <button type="button" class="show-pass" aria-pressed="false" aria-label="Show password">Show</button>
+
+              <div class="pw-row">
+                <div class="pw-strength" aria-hidden="true">
+                  <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                </div>
+                <div class="pw-hint muted">8+ chars, mix letters & numbers</div>
+              </div>
+
+              <div class="field-msg" id="passwordMsg" aria-live="polite"></div>
+            </div>
+
+            <!-- ACTION -->
+            <div class="form-actions">
+              <button id="submitBtn" type="submit" class="btn btn-primary btn-compact">
+                <span class="btn-text">Create account</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div class="divider"><span>or</span></div>
+
+            <!-- SOCIALS -->
+            <div class="socials">
+              <button type="button" class="btn social google" id="googleBtn">
+                <img src="assets/images/google.svg" alt="" aria-hidden="true"> Google
+              </button>
+              <button type="button" class="btn social github" id="githubBtn">
+                <img src="assets/images/github.svg" alt="" aria-hidden="true"> GitHub
+              </button>
+            </div>
+
+            <p class="signup-note small">Already have an account? <a href="login.html">Login</a></p>
+
+            <div id="formFeedback" class="form-feedback" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <aside class="signup-right" aria-hidden="true">
+          <div class="hero-shot">
+            <img src="assets/images/hero-card.jpg" alt="Coastline">
+          </div>
+          <div class="hero-overlay">
+            <h3>Join OceanSense</h3>
+            <p class="muted">Help report hazards and protect coastlines.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer small text-center py-3">
+    <div class="container"><small class="text-muted">© <span id="year"></span> OceanSense Solutions</small></div>
+  </footer>
+
 <script>
-document.getElementById('signupForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const res = await fetch('/api/auth/signup', {method:'POST', body: JSON.stringify(Object.fromEntries(fd)), headers:{'Content-Type':'application/json'}});
-  if(res.ok) { alert('Account created'); location.href='login.html'; } else { alert('Signup failed'); }
-});
-</script></body></html>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Compact signup interactions: password strength, show/hide, submit (no agree checkbox) */
+(() => {
+  const form = document.getElementById('signupForm');
+  const email = document.getElementById('email');
+  const pw = document.getElementById('password');
+  const submitBtn = document.getElementById('submitBtn');
+  const emailMsg = document.getElementById('emailMsg');
+  const passwordMsg = document.getElementById('passwordMsg');
+  const feedback = document.getElementById('formFeedback');
+  const showBtn = document.querySelector('.show-pass');
+  const bars = document.querySelectorAll('.pw-strength .bar');
+
+  // input value indicator (adds .has-value if not empty — can be used by CSS if desired)
+  [email, pw].forEach(input => {
+    input.addEventListener('input', () => input.classList.toggle('has-value', input.value.trim() !== ''));
+    if (input.value.trim() !== '') input.classList.add('has-value');
+  });
+
+  // show/hide password
+  showBtn.addEventListener('click', () => {
+    const pressed = showBtn.getAttribute('aria-pressed') === 'true';
+    showBtn.setAttribute('aria-pressed', String(!pressed));
+    pw.type = pressed ? 'password' : 'text';
+    showBtn.textContent = pressed ? 'Show' : 'Hide';
+  });
+
+  // score password (0-4)
+  function scorePassword(s){
+    let score=0; if(!s) return 0;
+    if(s.length>=8) score++;
+    if(/[a-z]/.test(s) && /[A-Z]/.test(s)) score++;
+    if(/\d/.test(s)) score++;
+    if(/[^A-Za-z0-9]/.test(s)) score++;
+    return score;
+  }
+  function updateStrength(){ const sc=scorePassword(pw.value); bars.forEach((b,i)=> b.classList.toggle('active', i<sc)); return sc; }
+  pw.addEventListener('input', updateStrength);
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    emailMsg.textContent=''; passwordMsg.textContent=''; feedback.textContent='';
+    let ok = true;
+
+    if(!emailRe.test(email.value.trim())){
+      emailMsg.textContent = 'Enter a valid email';
+      ok = false;
+    }
+    if(scorePassword(pw.value) < 3){
+      passwordMsg.textContent = 'Choose a stronger password (8+ chars, mix letters & numbers)';
+      ok = false;
+    }
+    if(!ok){
+      if(emailMsg.textContent) email.focus();
+      else if(passwordMsg.textContent) pw.focus();
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+    submitBtn.querySelector('.btn-text').textContent = 'Creating…';
+
+    try {
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.value.trim(), password: pw.value })
+      });
+
+      if(res.ok){
+        feedback.textContent = 'Account created — redirecting…';
+        feedback.classList.add('success');
+        setTimeout(() => location.href = 'login.html', 700);
+      } else {
+        let t = 'Signup failed';
+        try { const j = await res.json(); t = j.message || t; } catch {}
+        feedback.textContent = t;
+        feedback.classList.add('error');
+      }
+    } catch(err){
+      feedback.textContent = 'Network error — please try again';
+      feedback.classList.add('error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.querySelector('.btn-text').textContent = 'Create account';
+      setTimeout(()=> feedback.classList.remove('success','error'), 3500);
+    }
+  });
+
+  document.getElementById('googleBtn').addEventListener('click', ()=> window.location.href='/auth/google');
+  document.getElementById('githubBtn').addEventListener('click', ()=> window.location.href='/auth/github');
+})();
+</script>
+</body>
+</html>
