@@ -146,3 +146,35 @@ body{
   z-index: 2;
 }
 
+.report-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.report-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.report-card h3 {
+  margin: 0 0 6px;
+}
+
+.report-card .meta {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: #555;
+}
+
+.sev.low { color: green; }
+.sev.medium { color: orange; }
+.sev.high { color: red; }
+
+.status {
+  margin-top: 20px;
+  font-weight: 600;
+}

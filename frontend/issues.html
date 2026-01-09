@@ -1,12 +1,47 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Issue List</title><link rel="stylesheet" href="assets/css/styles.css"></head><body>
-  <div class="container"><h1>Recent Reports</h1><div id="list"></div></div>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Recent Reports</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Recent Reports</h1>
+  <div id="list">Loading...</div>
+</div>
+
 <script>
-async function load(){
-  const res = await fetch('/api/issues');
-  const data = await res.json();
-  const list = document.getElementById('list');
-  list.innerHTML = data.map(i=>`<div class="report"><h3>${i.title}</h3><small>${i.created_at}</small><p>${i.description}</p></div>`).join('');
+async function loadReports() {
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/issues');
+    if (!res.ok) throw new Error('API error');
+
+    const data = await res.json();
+    const list = document.getElementById('list');
+
+    if (data.length === 0) {
+      list.innerHTML = '<p>No reports yet.</p>';
+      return;
+    }
+
+    list.innerHTML = data.map(i => `
+      <div class="report-card">
+        <h3>${i.title}</h3>
+        <small>Severity: ${i.severity}</small>
+        <p>${i.description}</p>
+        <p><b>Lat:</b> ${i.lat}, <b>Lon:</b> ${i.lon}</p>
+      </div>
+    `).join('');
+  } catch (err) {
+    document.getElementById('list').innerHTML =
+      '<p style="color:red">Failed to load reports</p>';
+  }
 }
-load();
-</script></body></html>
+
+loadReports();
+</script>
+
+</body>
+</html>

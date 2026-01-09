@@ -5,315 +5,166 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Report an Ocean Hazard — OceanSense</title>
 
-  <!-- Leaflet for map (pick coordinates) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-xwE/HO3m9Q+3fY1kR0sCq6k1b2a1rjF2Jx0k5hE1jU8=" crossorigin=""/>
-
-  <!-- Bootstrap utilities (optional) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Your site styles -->
   <link rel="stylesheet" href="assets/css/styles.css">
-
-  <!-- Page-specific styles -->
   <link rel="stylesheet" href="assets/css/report.css">
 </head>
+
 <body>
 
 <header class="site-header">
   <div class="container header-inner d-flex align-items-center justify-content-between">
     <a href="index.html" class="brand d-flex align-items-center text-decoration-none">
-      <img src="assets/images/logo.png" alt="OceanSense logo" class="logo">
+      <img src="assets/images/logo.png" class="logo" alt="OceanSense logo">
       <span class="brand-name">Ocean<span class="brand-accent">Sense</span></span>
     </a>
   </div>
 </header>
 
 <main class="py-5">
-  <div class="container">
-    <div class="report-card">
-      <div class="report-left">
-        <h1 class="report-title">Report an Ocean Hazard</h1>
-        <p class="muted">Share photos, location and severity so local authorities can respond quickly.</p>
+<div class="container">
+<div class="report-card">
+<div class="report-left">
 
-        <form id="reportForm" class="report-form" enctype="multipart/form-data" novalidate>
-          <div class="field">
-            <label for="title">Title <span aria-hidden="true" class="required">*</span></label>
-            <input id="title" name="title" type="text" placeholder="Short descriptive title" required>
-            <div class="field-msg" id="msg-title" aria-live="polite"></div>
-          </div>
+<h1 class="report-title">Report an Ocean Hazard</h1>
+<p class="muted">Share photos, location and severity so local authorities can respond quickly.</p>
 
-          <div class="field">
-            <label for="description">Description <span class="required">*</span></label>
-            <textarea id="description" name="description" rows="5" placeholder="Describe the hazard, location detail, time observed..." required></textarea>
-            <div class="field-msg" id="msg-description" aria-live="polite"></div>
-          </div>
+<form id="reportForm" enctype="multipart/form-data" novalidate>
 
-          <div class="row gx-2">
-            <div class="col-sm-6 field">
-              <label for="lat">Latitude <span class="required">*</span></label>
-              <input id="lat" name="lat" type="text" placeholder="e.g. 12.345678" inputmode="decimal" required>
-              <div class="field-msg" id="msg-lat" aria-live="polite"></div>
-            </div>
+<div class="field">
+  <label>Title *</label>
+  <input name="title" id="title" required>
+  <div class="field-msg" id="msg-title"></div>
+</div>
 
-            <div class="col-sm-6 field">
-              <label for="lon">Longitude <span class="required">*</span></label>
-              <input id="lon" name="lon" type="text" placeholder="e.g. 98.765432" inputmode="decimal" required>
-              <div class="field-msg" id="msg-lon" aria-live="polite"></div>
-            </div>
-          </div>
+<div class="field">
+  <label>Description *</label>
+  <textarea name="description" id="description" required></textarea>
+  <div class="field-msg" id="msg-description"></div>
+</div>
 
-          <div class="field slider-field">
-            <label for="severity">Severity</label>
-            <div class="severity-row">
-              <input id="severity" name="severity" type="range" min="0" max="2" value="0" step="1" aria-valuemin="0" aria-valuemax="2">
-              <div class="severity-badges">
-                <span class="badge low active">Low</span>
-                <span class="badge med">Medium</span>
-                <span class="badge high">High</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="photo">Photo (optional)</label>
-            <div id="dropzone" class="dropzone" tabindex="0">
-              <input id="photo" name="photo" type="file" accept="image/*" class="file-input" />
-              <div class="dz-instructions">Drag & drop an image here<br>or click to select</div>
-              <div id="preview" class="preview" aria-hidden="true"></div>
-            </div>
-            <div class="field-msg" id="msg-photo" aria-live="polite"></div>
-          </div>
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary btn-submit">Submit report</button>
-            <button type="button" id="clearBtn" class="btn btn-ghost">Clear</button>
-            <button type="button" id="locateBtn" class="btn btn-outline">Use my location</button>
-          </div>
-
-          <div id="formFeedback" class="form-feedback" aria-live="polite"></div>
-        </form>
-      </div>
-
-      <aside class="report-right">
-        <div class="map-wrap">
-          <div id="map" class="map" title="Click map to set marker and coordinates"></div>
-        </div>
-
-        <div class="instructions">
-          <h3>How to pick a location</h3>
-          <ol>
-            <li>Pan the map and click where the hazard occurred.</li>
-            <li>Or press <em>Use my location</em> to auto-fill coordinates.</li>
-            <li>Add a photo and severity, then press Submit.</li>
-          </ol>
-        </div>
-      </aside>
-    </div>
+<div class="row gx-2">
+  <div class="col-sm-6 field">
+    <label>Latitude *</label>
+    <input name="lat" id="lat" required>
+    <div class="field-msg" id="msg-lat"></div>
   </div>
+  <div class="col-sm-6 field">
+    <label>Longitude *</label>
+    <input name="lon" id="lon" required>
+    <div class="field-msg" id="msg-lon"></div>
+  </div>
+</div>
+
+<div class="field">
+  <label>Severity</label>
+  <input type="range" id="severity" min="0" max="2" value="0">
+</div>
+
+<div class="field">
+  <label>Photo (optional)</label>
+  <input type="file" id="photo" name="photo" accept="image/*">
+</div>
+
+<div class="form-actions">
+  <button type="submit" class="btn btn-primary btn-submit">Submit report</button>
+</div>
+
+<div id="formFeedback"></div>
+</form>
+</div>
+
+<aside class="report-right">
+  <div id="map" style="height:300px"></div>
+</aside>
+
+</div>
+</div>
 </main>
 
-<footer class="site-footer py-4">
-  <div class="container text-center small text-muted">© <span id="year"></span> OceanSense Solutions</div>
-</footer>
-
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-o9N1j7kGkQf3d0nq8gqv8s/7r9m6kGQw1a+6ASj0uKk=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
-
 (() => {
-  // Elements
+
   const form = document.getElementById('reportForm');
   const titleEl = document.getElementById('title');
   const descEl = document.getElementById('description');
   const latEl = document.getElementById('lat');
   const lonEl = document.getElementById('lon');
   const severityEl = document.getElementById('severity');
-  const dropzone = document.getElementById('dropzone');
   const photoInput = document.getElementById('photo');
-  const preview = document.getElementById('preview');
-  const msgPhoto = document.getElementById('msg-photo');
-  const locateBtn = document.getElementById('locateBtn');
-  const clearBtn = document.getElementById('clearBtn');
-  const formFeedback = document.getElementById('formFeedback');
+  const feedback = document.getElementById('formFeedback');
 
-  // --- Map (Leaflet)
-  const map = L.map('map', { zoomControl: true }).setView([20.0, 0.0], 2);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19, attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  let marker = null;
-  function setMarker(lat, lon, pan=true) {
-    if (marker) marker.setLatLng([lat, lon]);
-    else marker = L.marker([lat, lon], { draggable: true }).addTo(map).on('dragend', e => {
-      const p = e.target.getLatLng();
-      latEl.value = p.lat.toFixed(6);
-      lonEl.value = p.lng.toFixed(6);
-    });
-    latEl.value = parseFloat(lat).toFixed(6);
-    lonEl.value = parseFloat(lon).toFixed(6);
-    if (pan) map.setView([lat, lon], Math.max(map.getZoom(), 12));
-  }
-
-  map.on('click', e => {
-    setMarker(e.latlng.lat, e.latlng.lng, false);
-  });
-
-  // Try to prefill from browser geolocation
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const { latitude, longitude } = pos.coords;
-      // small default zoom but don't force user view
-      // setMarker(latitude, longitude, false);
-    }, ()=>{/* ignore errors */});
-  }
-
-  locateBtn.addEventListener('click', () => {
-    if (!navigator.geolocation) {
-      alert('Geolocation is not available in your browser.');
-      return;
-    }
-    locateBtn.disabled = true;
-    locateBtn.textContent = 'Locating…';
-    navigator.geolocation.getCurrentPosition((position) => {
-      setMarker(position.coords.latitude, position.coords.longitude, true);
-      locateBtn.disabled = false;
-      locateBtn.textContent = 'Use my location';
-    }, (err) => {
-      locateBtn.disabled = false; locateBtn.textContent = 'Use my location';
-      alert('Unable to get your location: ' + (err.message || 'permission denied'));
-    }, { enableHighAccuracy: true, timeout: 10000 });
-  });
-
-  // Drag & drop + preview
-  const MAX_MB = 8;
-  function resetPreview() {
-    preview.innerHTML = '';
-    preview.style.display = 'none';
-  }
-  function showPreview(file) {
-    resetPreview();
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = 'uploaded photo preview';
-    img.onload = () => URL.revokeObjectURL(url);
-    preview.appendChild(img);
-    preview.style.display = 'block';
-  }
-
-  // file selection
-  dropzone.addEventListener('click', ()=> photoInput.click());
-  dropzone.addEventListener('keydown', (e)=> { if(e.key === 'Enter' || e.key === ' ') photoInput.click(); });
-
-  photoInput.addEventListener('change', (e) => {
-    const f = e.target.files[0];
-    if (!f) { resetPreview(); return; }
-    if (!f.type.startsWith('image/')) { msgPhoto.textContent = 'Only images are allowed.'; photoInput.value = ''; return; }
-    if (f.size > MAX_MB * 1024 * 1024) { msgPhoto.textContent = `Image too large — max ${MAX_MB} MB.`; photoInput.value = ''; return; }
-    msgPhoto.textContent = '';
-    showPreview(f);
-  });
-
-  // drag/drop
-  ['dragenter','dragover'].forEach(ev => {
-    dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.add('hover'); });
-  });
-  ['dragleave','drop','dragend'].forEach(ev => {
-    dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.remove('hover'); });
-  });
-  dropzone.addEventListener('drop', (e) => {
-    const f = e.dataTransfer.files && e.dataTransfer.files[0];
-    if (!f) return;
-    photoInput.files = e.dataTransfer.files; // set input's files
-    photoInput.dispatchEvent(new Event('change'));
-  });
-
-  // severity badges
-  const badges = document.querySelectorAll('.severity-badges .badge');
-  function updateSeverityUI(v) {
-    badges.forEach((b, i) => b.classList.toggle('active', i == v));
-  }
-  severityEl.addEventListener('input', ()=> updateSeverityUI(Number(severityEl.value)));
-  updateSeverityUI(Number(severityEl.value));
-
-  // Clear button
-  clearBtn.addEventListener('click', ()=> {
-    form.reset();
-    resetPreview();
-    if (marker) { map.removeLayer(marker); marker = null; }
-    formFeedback.textContent = '';
-    badges.forEach((b,i)=> b.classList.toggle('active', i === 0));
-  });
-
-  // Basic validation helpers
-  function isValidCoord(v) {
+  // ✅ FIX-3: Correct coordinate validation
+  function isValidLat(v) {
     const n = Number(v);
-    return !Number.isNaN(n) && isFinite(n) && Math.abs(n) <= 180;
+    return !isNaN(n) && n >= -90 && n <= 90;
+  }
+  function isValidLon(v) {
+    const n = Number(v);
+    return !isNaN(n) && n >= -180 && n <= 180;
   }
 
-  // Submit handler
-  form.addEventListener('submit', async (e) => {
+  // Map
+  const map = L.map('map').setView([20, 0], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+  let marker;
+  map.on('click', e => {
+    if (!marker) marker = L.marker(e.latlng).addTo(map);
+    else marker.setLatLng(e.latlng);
+    latEl.value = e.latlng.lat.toFixed(6);
+    lonEl.value = e.latlng.lng.toFixed(6);
+  });
+
+  // Submit
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    // clear messages
-    document.querySelectorAll('.field-msg').forEach(n => n.textContent = '');
-    formFeedback.textContent = '';
+    feedback.textContent = '';
 
-    let ok = true;
-    if (!titleEl.value.trim()) { document.getElementById('msg-title').textContent = 'Title is required'; ok=false; }
-    if (!descEl.value.trim()) { document.getElementById('msg-description').textContent = 'Description is required'; ok=false; }
-    if (!isValidCoord(latEl.value)) { document.getElementById('msg-lat').textContent = 'Enter valid latitude'; ok=false; }
-    if (!isValidCoord(lonEl.value)) { document.getElementById('msg-lon').textContent = 'Enter valid longitude'; ok=false; }
+    if (!titleEl.value.trim()) return feedback.textContent = 'Title required';
+    if (!descEl.value.trim()) return feedback.textContent = 'Description required';
+    if (!isValidLat(latEl.value)) return feedback.textContent = 'Invalid latitude';
+    if (!isValidLon(lonEl.value)) return feedback.textContent = 'Invalid longitude';
 
-    // optional file checks already handled on change
-    const f = photoInput.files && photoInput.files[0];
-    if (f && !f.type.startsWith('image/')) { document.getElementById('msg-photo').textContent = 'Uploaded file is not an image.'; ok = false; }
-
-    if (!ok) return;
-
-    // Build FormData and submit
-    const submitBtn = form.querySelector('.btn-submit');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting…';
-
-    const fd = new FormData();
-    fd.append('title', titleEl.value.trim());
-    fd.append('description', descEl.value.trim());
-    fd.append('lat', latEl.value.trim());
-    fd.append('lon', lonEl.value.trim());
-    const sevMap = ['low','medium','high'];
-    fd.append('severity', sevMap[Number(severityEl.value)]);
-    if (f) fd.append('photo', f, f.name);
+    const fd = new FormData(form);
+    fd.set('severity', ['low','medium','high'][severityEl.value]);
 
     try {
-      const resp = await fetch('/api/issues', { method: 'POST', body: fd });
-      if (resp.ok) {
-        formFeedback.textContent = 'Report submitted — thank you!';
-        formFeedback.classList.add('success');
-        // reset minimal state
-        form.reset();
-        resetPreview();
-        if (marker) { map.removeLayer(marker); marker = null; }
-      } else {
-        const text = await resp.text().catch(()=> 'Submission failed');
-        formFeedback.textContent = 'Server error: ' + text;
-        formFeedback.classList.add('error');
-      }
-    } catch (err) {
-      formFeedback.textContent = 'Network error: ' + (err.message || err);
-      formFeedback.classList.add('error');
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit report';
-      setTimeout(()=> { formFeedback.classList.remove('success','error'); }, 6000);
-    }
+  const resp = await fetch('/api/issues', {
+    method: 'POST',
+    body: fd
   });
+
+  const data = await resp.json();   // ✅ ALWAYS read JSON
+
+  console.log('API response:', data);
+
+  if (!resp.ok) {
+    throw new Error(data.detail || 'Submission failed');
+  }
+
+  // ✅ SUCCESS
+  formFeedback.textContent = 'Report submitted successfully!';
+  formFeedback.className = 'form-feedback success';
+
+  // redirect so user sees result
+  setTimeout(() => {
+    window.location.href = 'issues.html';
+  }, 800);
+
+} catch (err) {
+  console.error(err);
+  formFeedback.textContent = err.message || 'Server error';
+  formFeedback.className = 'form-feedback error';
+}
+
+  });
+
 })();
 </script>
+
 </body>
 </html>

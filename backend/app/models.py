@@ -11,14 +11,14 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 class Issue(Base):
-    __tablename__ = 'issues'
+    __tablename__ = "issues"
+
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200))
-    description = Column(Text)
-    lat = Column(Float)
-    lon = Column(Float)
-    severity = Column(String(20))
-    photo_path = Column(String(300), nullable=True)
-    reported_by = Column(Integer, nullable=True)
-    status = Column(String(30), default='pending')
+    title = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    lat = Column(Float, nullable=False)
+    lon = Column(Float, nullable=False)
+    severity = Column(String, default="low")
+    photo_path = Column(String, nullable=True)
+    status = Column(String, default="created")
     created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -21,3 +21,5 @@ Run Streamlit:
 ```
 streamlit run streamlit_app/streamlit_app.py
 ```
+//backend
+uvicorn app.main:app --reload
